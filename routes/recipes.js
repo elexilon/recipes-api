@@ -29,7 +29,7 @@ router.get('/recipes', (req, res, next) => {
   .put('/recipes/:id', (req, res, next) => {
     let updaRecipe = req.body
 
-    Recipe.findById({id: updaRecipe.id}, updaRecipe);
+    Recipe.findById(req.params.id)
       .then((recipe) => {
         if (!recipe) { return next() }
         recipe.title        = updaRecipe.title        || recipe.title
@@ -53,7 +53,7 @@ router.get('/recipes', (req, res, next) => {
   .patch('/recipes/:id', (req, res, next) => {
     let updaRecipe = req.body
 
-    Recipe.findById({id: updaRecipe.id}, updaRecipe);
+    Recipe.findById(req.params.id)
       .then((recipe) => {
         if (!recipe) { return next() }
         recipe.title        = updaRecipe.title        || recipe.title
@@ -77,6 +77,7 @@ router.get('/recipes', (req, res, next) => {
   })
   .delete('/recipes/:id', (req, res, next) => {
     const id = req.params.id
+    console.log(id)
     Recipe.findByIdAndRemove(id)
       .catch((error) => next(error))
   })
