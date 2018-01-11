@@ -19,14 +19,14 @@ router.get('/recipes', (req, res, next) => {
       })
       .catch((error) => next(error))
   })
-  .post('/recipes', (req, res, next) => {
+  router.post('/recipes', (req, res, next) => {
     let newRecipe = req.body
 
     Recipe.create(newRecipe)
       .then((recipe) => res.json(recipe))
       .catch((error) => next(error))
   })
-  .put('/recipes/:id', (req, res, next) => {
+  router.put('/recipes/:id', (req, res, next) => {
     let updaRecipe = req.body
 
     Recipe.findById(req.params.id)
@@ -50,7 +50,7 @@ router.get('/recipes', (req, res, next) => {
       })
       .catch((error) => next(error))
   })
-  .patch('/recipes/:id', (req, res, next) => {
+  router.patch('/recipes/:id', (req, res, next) => {
     let updaRecipe = req.body
 
     Recipe.findById(req.params.id)
@@ -75,7 +75,7 @@ router.get('/recipes', (req, res, next) => {
       .catch((error) => next(error))
 
   })
-  .delete('/recipes/:id', (req, res, next) => {
+  router.delete('/recipes/:id', (req, res, next) => {
     const id = req.params.id
     console.log(id)
     Recipe.findByIdAndRemove(id)
