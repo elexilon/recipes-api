@@ -6,16 +6,16 @@ const jwtOptions = require('./jwt')
 
 const JwtStrategy = passportJWT.Strategy
 
-const tokenStrategy = new JwtStrategy(jwtOptions, (jwtPayload, done) => {
+const tokenStrategy = new JwtStrategy(jwtOptions, (jwtPayload, next) => {
   const user = User.findById(jwtPayload.id)
     .then((user) => {
       if (user) {
-        done(null, user)
+        next(null, user)
       } else {
-        done(null, false)
+        next(null, false)
       }
     })
-    .catch((err) => done(err, false))
+    .catch((err) => next(err, false))
 })
 
 passport.use(User.createStrategy())

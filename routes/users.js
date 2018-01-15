@@ -9,20 +9,19 @@ router.post('/users', (req, res, next) => {
       return next(err)
     }
 
-    res.status(201).send(user)
+    const {name, emal, createdAt, updatedAt} = user
+    res.status(201).send({name, emal, createdAt, updatedAt})
   })
 })
-router.get('/users/me', passport.authorize('jwt', { session: false }), (req, res, next) => {
+.get('/users/me', passport.authorize('jwt', { session: false }), (req, res, next) => {
   // Once authorized, the user data should be in `req.account`!
   if (!req.account) {
     const error = new Error('Unauthorized')
     error.status = 401
     next(error)
   }
-
+  
   res.json(req.account)
 })
-
-
 
 module.exports = router

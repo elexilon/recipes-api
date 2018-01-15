@@ -15,71 +15,69 @@ router.get('/recipes', (req, res, next) => {
     Recipe.findById(id)
       .then((recipe) => {
         if (!recipe) { return next() }
+        res.status = 200
         res.json(recipe)
       })
       .catch((error) => next(error))
   })
-  router.post('/recipes', (req, res, next) => {
+  .post('/recipes', (req, res, next) => {
     let newRecipe = req.body
 
     Recipe.create(newRecipe)
-      .then((recipe) => res.json(recipe))
-      .catch((error) => next(error))
-  })
-  router.put('/recipes/:id', (req, res, next) => {
-    let updaRecipe = req.body
-
-    Recipe.findById(req.params.id)
       .then((recipe) => {
-        if (!recipe) { return next() }
-        recipe.title        = updaRecipe.title        || recipe.title
-        recipe.summary      = updaRecipe.summary      || recipe.summary
-        recipe.photo        = updaRecipe.photo        || recipe.photo
-        recipe.vegan        = updaRecipe.vegan        || recipe.vegan
-        recipe.vegetarian   = updaRecipe.vegetarian   || recipe.vegetarian
-        recipe.pescatarian  = updaRecipe.pescatarian  || recipe.pescatarian
-        recipe.cookingTime  = updaRecipe.cookingTime  || recipe.cookingTime
-        recipe.ingredients  = updaRecipe.ingredients  || recipe.ingredients
-        recipe.cookingSteps = updaRecipe.cookingSteps || recipe.cookingSteps
-        recipe.likedBy      = updaRecipe.likedBy      || recipe.likedBy
-        recipe.authorId     = updaRecipe.authorId     || recipe.authorId
-        recipe.createdAt    = updaRecipe.createdAt    || recipe.createdAt
-        recipe.updatedAt    = updaRecipe.updatedAt    || recipe.updatedAt
-        recipe.save(recipe)
+        res.status = 201
         res.json(recipe)
       })
       .catch((error) => next(error))
   })
-  router.patch('/recipes/:id', (req, res, next) => {
+  .put('/recipes/:id', (req, res, next) => {
+    const recipeId = req.params.id
     let updaRecipe = req.body
 
-    Recipe.findById(req.params.id)
-      .then((recipe) => {
-        if (!recipe) { return next() }
-        recipe.title        = updaRecipe.title        || recipe.title
-        recipe.summary      = updaRecipe.summary      || recipe.summary
-        recipe.photo        = updaRecipe.photo        || recipe.photo
-        recipe.vegan        = updaRecipe.vegan        || recipe.vegan
-        recipe.vegetarian   = updaRecipe.vegetarian   || recipe.vegetarian
-        recipe.pescatarian  = updaRecipe.pescatarian  || recipe.pescatarian
-        recipe.cookingTime  = updaRecipe.cookingTime  || recipe.cookingTime
-        recipe.ingredients  = updaRecipe.ingredients  || recipe.ingredients
-        recipe.cookingSteps = updaRecipe.cookingSteps || recipe.cookingSteps
-        recipe.likedBy      = updaRecipe.likedBy      || recipe.likedBy
-        recipe.authorId     = updaRecipe.authorId     || recipe.authorId
-        recipe.createdAt    = updaRecipe.createdAt    || recipe.createdAt
-        recipe.updatedAt    = updaRecipe.updatedAt    || recipe.updatedAt
-        recipe.save(recipe)
-        res.json(recipe)
-      })
-      .catch((error) => next(error))
+    Recipe.findOneAndUpdate(recipeId, updaRecipe)
+    .then((recipe) => {
+      if (!recipe) { return next() }
+      res.status = 200
+      res.json(recipe)
+    })
+    .catch((error) => next(error))
+  })
+  .patch('/recipes/:id', (req, res, next) => {
+    const recipeId = req.params.id
+    let updaRecipe = req.body
+
+    Recipe.findOneAndUpdate(recipeId, updaRecipe)
+    .then((recipe) => {
+      if (!recipe) { return next() }
+      res.status = 200
+      // recipe.title        = updaRecipe.title        || recipe.title
+      // recipe.summary      = updaRecipe.summary      || recipe.summary
+      // recipe.photo        = updaRecipe.photo        || recipe.photo
+      // recipe.vegan        = updaRecipe.vegan        || recipe.vegan
+      // recipe.vegetarian   = updaRecipe.vegetarian   || recipe.vegetarian
+      // recipe.pescatarian  = updaRecipe.pescatarian  || recipe.pescatarian
+      // recipe.cookingTime  = updaRecipe.cookingTime  || recipe.cookingTime
+      // recipe.ingredients  = updaRecipe.ingredients  || recipe.ingredients
+      // recipe.cookingSteps = updaRecipe.cookingSteps || recipe.cookingSteps
+      // recipe.likedBy      = updaRecipe.likedBy      || recipe.likedBy
+      // recipe.authorId     = updaRecipe.authorId     || recipe.authorId
+      // recipe.createdAt    = updaRecipe.createdAt    || recipe.createdAt
+      // recipe.updatedAt    = updaRecipe.updatedAt    || recipe.updatedAt
+      // recipe.save(recipe)
+      res.json(recipe)
+    })
+    .catch((error) => next(error))
 
   })
-  router.delete('/recipes/:id', (req, res, next) => {
+  .delete('/recipes/:id', (req, res, next) => {
     const id = req.params.id
     console.log(id)
     Recipe.findByIdAndRemove(id)
-      .catch((error) => next(error))
+    .then((recipe) => {
+      if (!recipe) { return next() }
+      res.status = 204
+    })
+    .catch((error) => next(error))
   })
 
 
