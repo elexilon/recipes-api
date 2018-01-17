@@ -2,19 +2,31 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const { recipes, users, sessions } = require('./routes')
 const passport = require('./config/auth')
+var cors = require('cors')
 
 const port = process.env.PORT || 3030
 
 let app = express()
 
+var corsOptions = {
+  origin: 'http://localhost:3000',
+  authenticate: true
+}
+
 app
+  .use(cors(corsOptions))
   .use(bodyParser.urlencoded({ extended: true }))
   .use(bodyParser.json())
   .use(passport.initialize())
-
-  .get('/', (req, res) => {
-    res.send('Hello from Express!')
+  .use(function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*')
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
+    res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE')
+    next()
   })
+  // .get('/', (req, res) => {
+  //   //res.send('Hello from Express!')
+  // })
   // Our recipes routes
   .use(recipes)
 
